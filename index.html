@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computational Chemistry Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #1a1815;
+    --paper: #faf8f3;
+    --paper-warm: #f3efe5;
+    --rule: #2a2724;
+    --rule-soft: #d4cfc0;
+    --muted: #6b665d;
+    --accent: #8b3a1f;       /* burnt sienna */
+    --purple: #3c3489;
+    --teal: #0f6e56;
+    --coral: #993c1d;
+    --bg-purple: #eeedfe;
+    --bg-teal: #e1f5ee;
+    --bg-coral: #faece7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 400;
+    line-height: 1.65;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  /* Subtle paper texture via repeating gradient */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(139, 58, 31, 0.02) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(60, 52, 137, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ----- Top nav ----- */
+  nav.topbar {
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  nav.topbar .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+  }
+  .brand .dot { color: var(--accent); }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .nav-links a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  .nav-links a:hover { border-bottom-color: var(--accent); }
+
+  /* ----- Hero ----- */
+  .hero {
+    padding: 100px 0 80px;
+    border-bottom: 1px solid var(--rule-soft);
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 84px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+    max-width: 900px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 620px;
+    margin-bottom: 36px;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 6px 12px;
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--paper);
+  }
+  .tag.organic { color: var(--purple); border-color: var(--purple); }
+  .tag.analytical { color: var(--teal); border-color: var(--teal); }
+  .tag.inorganic { color: var(--coral); border-color: var(--coral); }
+
+  /* Decorative molecular sketch in hero */
+  .hero-decor {
+    position: absolute;
+    right: -40px;
+    top: 80px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* ----- Section headers ----- */
+  .section { padding: 80px 0; border-bottom: 1px solid var(--rule-soft); }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 16px;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+  }
+  .section-aside {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ----- Filters ----- */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-bottom: 32px;
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    overflow: hidden;
+    width: fit-content;
+  }
+  .filter-btn {
+    background: var(--paper);
+    border: none;
+    border-right: 1px solid var(--rule-soft);
+    padding: 10px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    color: var(--ink);
+    transition: background 0.15s;
+  }
+  .filter-btn:last-child { border-right: none; }
+  .filter-btn:hover { background: var(--paper-warm); }
+  .filter-btn[aria-pressed="true"] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ----- Project grid ----- */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule-soft);
+    border-left: 1px solid var(--rule-soft);
+  }
+  .project {
+    border-right: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 28px 28px 24px;
+    background: var(--paper);
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .project:hover { background: var(--paper-warm); }
+  .project-vis {
+    height: 140px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--rule-soft);
+  }
+  .project-vis.organic { background: var(--bg-purple); }
+  .project-vis.analytical { background: var(--bg-teal); }
+  .project-vis.inorganic { background: var(--bg-coral); }
+  .project-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  .project-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .project-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.55;
+    flex-grow: 1;
+  }
+  .project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tool {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    background: var(--paper-warm);
+    color: var(--ink);
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+  .project-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .project-arrow::after {
+    content: '→';
+    transition: transform 0.2s;
+  }
+  .project:hover .project-arrow::after { transform: translateX(4px); }
+
+  /* ----- Skills ----- */
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+  .skill {
+    background: var(--paper);
+    padding: 24px;
+  }
+  .skill-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .skill-value {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  /* ----- Contact ----- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .contact-prose {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .contact-prose em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .contact-list { list-style: none; }
+  .contact-list li {
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 16px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .contact-list li:first-child { border-top: 1px solid var(--rule-soft); }
+  .contact-list .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .contact-list .value {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+  }
+  .contact-list a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    transition: color 0.15s;
+  }
+  .contact-list a:hover { color: var(--accent); }
+
+  /* ----- Footer ----- */
+  footer {
+    padding: 40px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ----- Project detail view ----- */
+  .detail-view {
+    display: none;
+    min-height: 100vh;
+  }
+  .detail-view.active { display: block; }
+  body.detail-mode .main-view { display: none; }
+
+  .detail-header {
+    padding: 60px 0 50px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg-purple);
+    margin-bottom: 0;
+  }
+  .detail-header .container { position: relative; }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--purple);
+    background: none;
+    border: 1px solid var(--purple);
+    padding: 8px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 36px;
+    transition: all 0.15s;
+  }
+  .back-btn:hover { background: var(--purple); color: var(--bg-purple); }
+  .detail-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--purple);
+    margin-bottom: 16px;
+  }
+  .detail-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(40px, 5vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #26215c;
+    max-width: 800px;
+    margin-bottom: 20px;
+  }
+  .detail-title em { font-style: italic; }
+  .detail-sub {
+    font-size: 17px;
+    color: var(--purple);
+    max-width: 600px;
+    margin-bottom: 24px;
+  }
+  .detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--purple);
+  }
+
+  .detail-body { padding: 60px 0; }
+  .detail-section { margin-bottom: 56px; }
+  .detail-section h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule-soft);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .detail-section h2 .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+  .detail-section p {
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 14px;
+    max-width: 720px;
+  }
+  .detail-section p strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+  }
+
+  .software-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+  .software-card {
+    background: var(--paper);
+    padding: 20px 24px;
+  }
+  .software-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .software-card .value {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .chart-wrap {
+    background: var(--paper-warm);
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    padding: 28px;
+    height: 320px;
+    margin: 20px 0;
+  }
+
+  .findings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+    margin: 20px 0 24px;
+  }
+  .finding {
+    background: var(--paper);
+    padding: 24px;
+  }
+  .finding-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 36px;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .finding-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container, nav.topbar .inner { padding: 0 20px; }
+    nav.topbar .inner { padding: 14px 20px; }
+    .nav-links { gap: 14px; font-size: 10px; }
+    .hero { padding: 60px 0 50px; }
+    .section { padding: 56px 0; }
+    .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    .contact-prose { font-size: 22px; }
+    .section-head { flex-wrap: wrap; }
+    .section-aside { width: 100%; margin-left: 0; }
+    .hero-decor { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== MAIN VIEW ==================== -->
+<div class="main-view">
+
+  <nav class="topbar">
+    <div class="inner">
+      <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})">Lab notebook<span class="dot">.</span></div>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">Computational chemistry · Portfolio · 2026</div>
+      <h1>Modeling matter, <em>molecule by molecule.</em></h1>
+      <p class="hero-sub">A working portfolio of computational studies across organic mechanism, spectroscopic prediction, and materials simulation — with the data, the software, and the visualizations behind each one.</p>
+      <div class="hero-tags">
+        <span class="tag organic">Organic / synthesis</span>
+        <span class="tag analytical">Analytical / instrumental</span>
+        <span class="tag inorganic">Inorganic / materials</span>
+      </div>
+
+      <svg class="hero-decor" width="300" height="240" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#8b3a1f" stroke-width="1" fill="none">
+          <circle cx="80" cy="60" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="140" cy="80" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="200" cy="60" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="110" cy="130" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="170" cy="130" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="80" cy="180" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="140" cy="200" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="200" cy="180" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <line x1="80" y1="60" x2="140" y2="80"/>
+          <line x1="140" y1="80" x2="200" y2="60"/>
+          <line x1="140" y1="80" x2="110" y2="130"/>
+          <line x1="140" y1="80" x2="170" y2="130"/>
+          <line x1="110" y1="130" x2="80" y2="180"/>
+          <line x1="170" y1="130" x2="200" y2="180"/>
+          <line x1="110" y1="130" x2="140" y2="200"/>
+          <line x1="170" y1="130" x2="140" y2="200"/>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-num">01 / Selected work</span>
+        <h2 class="section-title">Projects</h2>
+        <span class="section-aside">Click any to expand</span>
+      </div>
+
+      <div class="filters" id="filters" role="group" aria-label="Filter projects">
+        <button class="filter-btn" aria-pressed="true" data-filter="all">All</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="organic">Organic</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="analytical">Analytical</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="inorganic">Inorganic</button>
+      </div>
+
+      <div class="projects" id="projects-grid">
+
+        <article class="project" data-cat="organic" data-detail="diels-alder">
+          <div class="project-vis organic">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <circle cx="30" cy="40" r="6" fill="#7F77DD"/>
+              <circle cx="50" cy="28" r="6" fill="#7F77DD"/>
+              <circle cx="70" cy="40" r="6" fill="#7F77DD"/>
+              <circle cx="90" cy="28" r="6" fill="#534AB7"/>
+              <line x1="30" y1="40" x2="50" y2="28" stroke="#3C3489" stroke-width="1.5"/>
+              <line x1="50" y1="28" x2="70" y2="40" stroke="#3C3489" stroke-width="1.5"/>
+              <line x1="70" y1="40" x2="90" y2="28" stroke="#3C3489" stroke-width="1.5" stroke-dasharray="3,2"/>
+            </svg>
+          </div>
+          <div class="project-cat">Organic · DFT</div>
+          <h3 class="project-title">Diels-Alder transition states</h3>
+          <p class="project-desc">Mapped endo/exo selectivity across 12 dienophiles with B3LYP/6-31G(d) IRC analysis.</p>
+          <div class="project-tools"><span class="tool">Gaussian</span><span class="tool">GaussView</span><span class="tool">Python</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="organic">
+          <div class="project-vis organic">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <path d="M 20 50 L 35 30 L 55 35 L 70 25 L 90 35 L 100 55" stroke="#534AB7" stroke-width="2" fill="none"/>
+              <circle cx="20" cy="50" r="5" fill="#7F77DD"/>
+              <circle cx="35" cy="30" r="5" fill="#7F77DD"/>
+              <circle cx="55" cy="35" r="5" fill="#AFA9EC"/>
+              <circle cx="70" cy="25" r="5" fill="#7F77DD"/>
+              <circle cx="90" cy="35" r="5" fill="#7F77DD"/>
+              <circle cx="100" cy="55" r="5" fill="#534AB7"/>
+            </svg>
+          </div>
+          <div class="project-cat">Organic · MD + clustering</div>
+          <h3 class="project-title">Drug conformer search</h3>
+          <p class="project-desc">Conformational landscape of 8 oral drug candidates via metadynamics in explicit water.</p>
+          <div class="project-tools"><span class="tool">GROMACS</span><span class="tool">RDKit</span><span class="tool">PyMOL</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="analytical">
+          <div class="project-vis analytical">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <line x1="10" y1="65" x2="110" y2="65" stroke="#085041" stroke-width="1"/>
+              <path d="M 20 65 L 22 40 L 24 65" stroke="#0F6E56" stroke-width="1.5" fill="none"/>
+              <path d="M 40 65 L 42 25 L 44 65" stroke="#0F6E56" stroke-width="1.5" fill="none"/>
+              <path d="M 60 65 L 62 50 L 64 65" stroke="#0F6E56" stroke-width="1.5" fill="none"/>
+              <path d="M 78 65 L 80 35 L 82 65 L 84 45 L 86 65" stroke="#1D9E75" stroke-width="1.5" fill="none"/>
+              <path d="M 95 65 L 97 55 L 99 65" stroke="#0F6E56" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <div class="project-cat">Analytical · GIAO / ML</div>
+          <h3 class="project-title">NMR shift prediction</h3>
+          <p class="project-desc">¹H and ¹³C chemical shift prediction benchmarked against 200+ small-molecule references.</p>
+          <div class="project-tools"><span class="tool">ORCA</span><span class="tool">scikit-learn</span><span class="tool">Pandas</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="analytical">
+          <div class="project-vis analytical">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <path d="M 10 60 Q 15 60 18 50 Q 21 60 25 60 Q 35 60 40 30 Q 45 60 50 60 Q 60 60 65 45 Q 70 60 75 60 Q 90 60 95 25 Q 100 60 110 60" stroke="#0F6E56" stroke-width="1.5" fill="none"/>
+              <line x1="10" y1="60" x2="110" y2="60" stroke="#085041" stroke-width="0.5"/>
+            </svg>
+          </div>
+          <div class="project-cat">Analytical · IR / Raman</div>
+          <h3 class="project-title">Vibrational mode assignment</h3>
+          <p class="project-desc">Harmonic frequency calculations matched to experimental IR spectra for natural-product elucidation.</p>
+          <div class="project-tools"><span class="tool">Gaussian</span><span class="tool">VEDA</span><span class="tool">OriginLab</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="inorganic">
+          <div class="project-vis inorganic">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <g stroke="#993C1D" stroke-width="1" fill="none">
+                <rect x="20" y="20" width="20" height="20"/>
+                <rect x="40" y="20" width="20" height="20"/>
+                <rect x="60" y="20" width="20" height="20"/>
+                <rect x="80" y="20" width="20" height="20"/>
+                <rect x="20" y="40" width="20" height="20"/>
+                <rect x="40" y="40" width="20" height="20"/>
+                <rect x="60" y="40" width="20" height="20"/>
+                <rect x="80" y="40" width="20" height="20"/>
+              </g>
+              <circle cx="30" cy="30" r="2" fill="#D85A30"/>
+              <circle cx="50" cy="50" r="2" fill="#D85A30"/>
+              <circle cx="70" cy="30" r="2" fill="#D85A30"/>
+              <circle cx="90" cy="50" r="2" fill="#D85A30"/>
+            </svg>
+          </div>
+          <div class="project-cat">Inorganic · GCMC</div>
+          <h3 class="project-title">MOF CO₂ uptake screening</h3>
+          <p class="project-desc">Screened 1,200 metal-organic frameworks for CO₂/N₂ selectivity at flue-gas conditions.</p>
+          <div class="project-tools"><span class="tool">RASPA</span><span class="tool">pymatgen</span><span class="tool">VESTA</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="inorganic">
+          <div class="project-vis inorganic">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <g fill="#D85A30">
+                <circle cx="30" cy="25" r="4"/><circle cx="50" cy="25" r="4"/><circle cx="70" cy="25" r="4"/><circle cx="90" cy="25" r="4"/>
+                <circle cx="40" cy="40" r="4"/><circle cx="60" cy="40" r="4"/><circle cx="80" cy="40" r="4"/>
+                <circle cx="30" cy="55" r="4"/><circle cx="50" cy="55" r="4"/><circle cx="70" cy="55" r="4"/><circle cx="90" cy="55" r="4"/>
+              </g>
+              <g fill="#993C1D">
+                <circle cx="40" cy="25" r="3"/><circle cx="60" cy="25" r="3"/><circle cx="80" cy="25" r="3"/>
+                <circle cx="30" cy="40" r="3"/><circle cx="50" cy="40" r="3"/><circle cx="70" cy="40" r="3"/><circle cx="90" cy="40" r="3"/>
+              </g>
+            </svg>
+          </div>
+          <div class="project-cat">Inorganic · Solid-state</div>
+          <h3 class="project-title">Li-ion cathode DFT</h3>
+          <p class="project-desc">Voltage profiles and migration barriers for layered NMC cathodes via NEB calculations.</p>
+          <div class="project-tools"><span class="tool">VASP</span><span class="tool">ASE</span><span class="tool">ParaView</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="analytical">
+          <div class="project-vis analytical">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <line x1="10" y1="65" x2="110" y2="65" stroke="#085041" stroke-width="1"/>
+              <line x1="25" y1="65" x2="25" y2="45" stroke="#0F6E56" stroke-width="2"/>
+              <line x1="45" y1="65" x2="45" y2="30" stroke="#0F6E56" stroke-width="2"/>
+              <line x1="58" y1="65" x2="58" y2="55" stroke="#0F6E56" stroke-width="2"/>
+              <line x1="72" y1="65" x2="72" y2="20" stroke="#1D9E75" stroke-width="2"/>
+              <line x1="85" y1="65" x2="85" y2="50" stroke="#0F6E56" stroke-width="2"/>
+              <line x1="98" y1="65" x2="98" y2="40" stroke="#0F6E56" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="project-cat">Analytical · ESI-MS/MS</div>
+          <h3 class="project-title">MS fragmentation modeling</h3>
+          <p class="project-desc">Predicted fragmentation pathways for unknown metabolites using CFM-ID and DFT energetics.</p>
+          <div class="project-tools"><span class="tool">CFM-ID</span><span class="tool">MZmine</span><span class="tool">R</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="organic">
+          <div class="project-vis organic">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <path d="M 15 55 Q 35 55 40 30 Q 50 15 60 35 Q 70 55 80 30 Q 90 15 105 50" stroke="#534AB7" stroke-width="2" fill="none"/>
+              <circle cx="40" cy="30" r="3" fill="#3C3489"/>
+              <circle cx="60" cy="35" r="3" fill="#3C3489"/>
+              <circle cx="80" cy="30" r="3" fill="#3C3489"/>
+              <line x1="15" y1="65" x2="105" y2="65" stroke="#26215C" stroke-width="0.5"/>
+            </svg>
+          </div>
+          <div class="project-cat">Organic · Mechanism</div>
+          <h3 class="project-title">Pd-catalyzed C–H activation</h3>
+          <p class="project-desc">Full catalytic cycle energetics with explicit solvent corrections and natural bond orbital analysis.</p>
+          <div class="project-tools"><span class="tool">ORCA</span><span class="tool">NBO7</span><span class="tool">Multiwfn</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-num">02 / Stack</span>
+        <h2 class="section-title">Skills &amp; tools</h2>
+      </div>
+      <div class="skills">
+        <div class="skill"><div class="skill-label">DFT</div><div class="skill-value">Gaussian, ORCA, VASP</div></div>
+        <div class="skill"><div class="skill-label">Molecular dynamics</div><div class="skill-value">GROMACS, LAMMPS</div></div>
+        <div class="skill"><div class="skill-label">Cheminformatics</div><div class="skill-value">RDKit, Open Babel</div></div>
+        <div class="skill"><div class="skill-label">Visualization</div><div class="skill-value">PyMOL, VESTA, ParaView</div></div>
+        <div class="skill"><div class="skill-label">Scripting</div><div class="skill-value">Python, Bash, Fortran</div></div>
+        <div class="skill"><div class="skill-label">Data &amp; ML</div><div class="skill-value">scikit-learn, PyTorch</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-num">03 / Reach out</span>
+        <h2 class="section-title">Contact</h2>
+      </div>
+      <div class="contact-grid">
+        <p class="contact-prose">Open to <em>collaborations,</em> roles, and conversations about computational methods.</p>
+        <ul class="contact-list">
+          <li><span class="label">Email</span><span class="value"><a href="mailto:drvmr83@gmail.com">drvmr83@gmail.com</a></span></li>
+          <li><span class="label">Scholar</span><span class="value"><a href="https://scholar.google.com/citations?user=H7CWqPEAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar →</a></span></li>
+          <li><span class="label">GitHub</span><span class="value"><a href="https://github.com/yourhandle" target="_blank" rel="noopener">@yourhandle</a></span></li>
+          <li><span class="label">ORCID</span><span class="value"><a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noopener">0000-0000-0000-0000</a></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px;">
+      <span>© 2026 · Computational chemistry portfolio</span>
+      <span>Built as a static site · hosted on GitHub Pages</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ==================== DIELS-ALDER DETAIL VIEW ==================== -->
+<div class="detail-view" id="detail-diels-alder">
+  <section class="detail-header">
+    <div class="container">
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+      <div class="detail-eyebrow">Project 01 · Organic · 2024</div>
+      <h1 class="detail-title">Diels-Alder <em>transition states</em></h1>
+      <p class="detail-sub">Endo / exo selectivity mapped across 12 dienophile partners using B3LYP-D3 with DLPNO-CCSD(T) refinement.</p>
+      <div class="detail-meta">
+        <span>~18,000 CPU-hr</span>
+        <span>·</span>
+        <span>12 substrates</span>
+        <span>·</span>
+        <span>24 transition states</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="detail-body">
+    <div class="container">
+
+      <div class="detail-section">
+        <h2><span class="num">§ 1</span>Motivation</h2>
+        <p>The Diels-Alder cycloaddition is a textbook concerted reaction, but endo / exo selectivity is governed by subtle secondary-orbital and steric effects. The goal here was to systematically map both transition states across a series of dienophiles and quantify <strong>what drives the preference</strong> — not just to predict it.</p>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 2</span>Software stack</h2>
+        <div class="software-grid">
+          <div class="software-card"><div class="label">Electronic structure</div><div class="value">Gaussian 16, B3LYP-D3/6-31G(d)</div></div>
+          <div class="software-card"><div class="label">Single-point refinement</div><div class="value">DLPNO-CCSD(T)/cc-pVTZ in ORCA</div></div>
+          <div class="software-card"><div class="label">Structure building / viz</div><div class="value">GaussView, Avogadro</div></div>
+          <div class="software-card"><div class="label">Analysis &amp; plotting</div><div class="value">Python (cclib, NumPy, Matplotlib)</div></div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 3</span>Workflow</h2>
+        <p>For each diene/dienophile pair: optimized reactants and product, located both endo and exo transition states with QST3, confirmed each TS with a single imaginary frequency, ran IRC in both directions to verify connectivity, then refined energies with DLPNO-CCSD(T) single points. Activation strain analysis decomposed the barrier into distortion and interaction terms.</p>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 4</span>Energy profile</h2>
+        <div class="chart-wrap">
+          <canvas id="da-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 5</span>Key findings</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding-num">10/12</div><div class="finding-label">endo-preferred</div></div>
+          <div class="finding"><div class="finding-num">1.4</div><div class="finding-label">avg ΔΔG‡ (kcal/mol)</div></div>
+          <div class="finding"><div class="finding-num">0.92</div><div class="finding-label">R² strain vs barrier</div></div>
+        </div>
+        <p>Endo preference correlated more strongly with <strong>interaction energy</strong> (secondary orbital overlap) than with steric distortion, except for the two bulky dienophiles where exo dominated. Including D3 dispersion was essential — without it, three substrates flipped preference incorrectly.</p>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 6</span>Deliverables</h2>
+        <p>Repository of optimized geometries (.xyz, .log files), Jupyter notebooks for the activation strain analysis, and a poster summarizing the substrate scope. Available on request.</p>
+      </div>
+
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Project filtering
+  const filters = document.getElementById('filters');
+  const projects = document.querySelectorAll('#projects-grid .project');
+  filters.addEventListener('click', function(e) {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    filters.querySelectorAll('.filter-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    btn.setAttribute('aria-pressed', 'true');
+    const cat = btn.dataset.filter;
+    projects.forEach(p => {
+      p.style.display = (cat === 'all' || p.dataset.cat === cat) ? '' : 'none';
+    });
+  });
+
+  // Open detail view
+  projects.forEach(p => {
+    p.addEventListener('click', function() {
+      const detailId = p.dataset.detail;
+      if (detailId) {
+        openDetail(detailId);
+      } else {
+        // No detail yet — graceful message
+        alert('Detail page coming soon. Edit index.html to add one.');
+      }
+    });
+  });
+
+  function openDetail(id) {
+    document.body.classList.add('detail-mode');
+    document.querySelectorAll('.detail-view').forEach(d => d.classList.remove('active'));
+    const target = document.getElementById('detail-' + id);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      renderChart();
+    }
+  }
+
+  function closeDetail() {
+    document.body.classList.remove('detail-mode');
+    document.querySelectorAll('.detail-view').forEach(d => d.classList.remove('active'));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  // Chart for Diels-Alder detail
+  let chartRendered = false;
+  function renderChart() {
+    if (chartRendered || typeof Chart === 'undefined') return;
+    const ctx = document.getElementById('da-chart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Reactants', '', 'TS', '', 'Product'],
+        datasets: [
+          {
+            label: 'endo',
+            data: [0, 8, 15.2, 5, -22],
+            borderColor: '#3c3489',
+            backgroundColor: 'rgba(60, 52, 137, 0.08)',
+            tension: 0.4,
+            borderWidth: 2.5,
+            pointRadius: [5,0,7,0,5],
+            pointBackgroundColor: '#3c3489',
+            fill: true
+          },
+          {
+            label: 'exo',
+            data: [0, 9, 16.6, 6, -21.5],
+            borderColor: '#8b3a1f',
+            backgroundColor: 'rgba(139, 58, 31, 0.08)',
+            tension: 0.4,
+            borderWidth: 2.5,
+            pointRadius: [5,0,7,0,5],
+            pointBackgroundColor: '#8b3a1f',
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: '#1a1815',
+              font: { family: 'JetBrains Mono', size: 11 },
+              boxWidth: 12,
+              padding: 16
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(1) + ' kcal/mol'
+            },
+            titleFont: { family: 'JetBrains Mono', size: 11 },
+            bodyFont: { family: 'Inter', size: 12 }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#6b665d', font: { family: 'JetBrains Mono', size: 10 } },
+            grid: { color: '#d4cfc0' }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'ΔG (kcal/mol)',
+              color: '#6b665d',
+              font: { family: 'JetBrains Mono', size: 11 }
+            },
+            ticks: { color: '#6b665d', font: { family: 'JetBrains Mono', size: 10 } },
+            grid: { color: '#d4cfc0' }
+          }
+        }
+      }
+    });
+    chartRendered = true;
+  }
+</script>
+
+</body>
+</html>
