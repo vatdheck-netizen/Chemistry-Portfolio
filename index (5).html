@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M. Venumadhava Reddy · Materials &amp; Computational Chemistry Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #1a1815;
+    --paper: #faf8f3;
+    --paper-warm: #f3efe5;
+    --rule: #2a2724;
+    --rule-soft: #d4cfc0;
+    --muted: #6b665d;
+    --accent: #8b3a1f;       /* burnt sienna */
+    --purple: #3c3489;
+    --teal: #0f6e56;
+    --coral: #993c1d;
+    --bg-purple: #eeedfe;
+    --bg-teal: #e1f5ee;
+    --bg-coral: #faece7;
+    --bg-process: #f5ebde;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 400;
+    line-height: 1.65;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  /* Subtle paper texture via repeating gradient */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(139, 58, 31, 0.02) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(60, 52, 137, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ----- Top nav ----- */
+  nav.topbar {
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+  nav.topbar .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+  }
+  .brand .dot { color: var(--accent); }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .nav-links a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  .nav-links a:hover { border-bottom-color: var(--accent); }
+
+  /* ----- Hero ----- */
+  .hero {
+    padding: 100px 0 80px;
+    border-bottom: 1px solid var(--rule-soft);
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 84px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+    max-width: 900px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 620px;
+    margin-bottom: 36px;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 6px 12px;
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--paper);
+  }
+  .tag.organic { color: var(--purple); border-color: var(--purple); }
+  .tag.analytical { color: var(--teal); border-color: var(--teal); }
+  .tag.inorganic { color: var(--coral); border-color: var(--coral); }
+  .tag.process { color: var(--accent); border-color: var(--accent); }
+
+  /* Decorative molecular sketch in hero */
+  .hero-decor {
+    position: absolute;
+    right: -40px;
+    top: 80px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* ----- About ----- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .about-prose {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+  .about-prose p { margin-bottom: 1.1em; }
+  .about-prose em { font-style: italic; color: var(--accent); }
+  .about-side ul { list-style: none; padding: 0; }
+  .about-side li {
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 18px 0;
+  }
+  .about-side li:first-child { border-top: 1px solid var(--rule-soft); }
+  .about-side .role {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+  .about-side .where {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .about-side .when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    .about-prose { font-size: 18px; }
+  }
+
+  /* ----- Section headers ----- */
+  .section { padding: 80px 0; border-bottom: 1px solid var(--rule-soft); }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 16px;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+  }
+  .section-aside {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ----- Filters ----- */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-bottom: 32px;
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    overflow: hidden;
+    width: fit-content;
+  }
+  .filter-btn {
+    background: var(--paper);
+    border: none;
+    border-right: 1px solid var(--rule-soft);
+    padding: 10px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    color: var(--ink);
+    transition: background 0.15s;
+  }
+  .filter-btn:last-child { border-right: none; }
+  .filter-btn:hover { background: var(--paper-warm); }
+  .filter-btn[aria-pressed="true"] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ----- Project grid ----- */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule-soft);
+    border-left: 1px solid var(--rule-soft);
+  }
+  .project {
+    border-right: 1px solid var(--rule-soft);
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 28px 28px 24px;
+    background: var(--paper);
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .project:hover { background: var(--paper-warm); }
+  .project-vis {
+    height: 140px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--rule-soft);
+  }
+  .project-vis.organic { background: var(--bg-purple); }
+  .project-vis.analytical { background: var(--bg-teal); }
+  .project-vis.inorganic { background: var(--bg-coral); }
+  .project-vis.process { background: var(--bg-process); }
+  .project-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+  .project-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .project-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.55;
+    flex-grow: 1;
+  }
+  .project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tool {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    background: var(--paper-warm);
+    color: var(--ink);
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+  .project-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .project-arrow::after {
+    content: '→';
+    transition: transform 0.2s;
+  }
+  .project:hover .project-arrow::after { transform: translateX(4px); }
+
+  /* ----- Skills ----- */
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+  .skill {
+    background: var(--paper);
+    padding: 24px;
+  }
+  .skill-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .skill-value {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  /* ----- Contact ----- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .contact-prose {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .contact-prose em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .contact-list { list-style: none; }
+  .contact-list li {
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 16px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .contact-list li:first-child { border-top: 1px solid var(--rule-soft); }
+  .contact-list .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .contact-list .value {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+  }
+  .contact-list a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    transition: color 0.15s;
+  }
+  .contact-list a:hover { color: var(--accent); }
+
+  /* ----- Footer ----- */
+  footer {
+    padding: 40px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ----- Project detail view ----- */
+  .detail-view {
+    display: none;
+    min-height: 100vh;
+  }
+  .detail-view.active { display: block; }
+  body.detail-mode .main-view { display: none; }
+
+  .detail-header {
+    padding: 60px 0 50px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg-purple);
+    margin-bottom: 0;
+  }
+  .detail-header.analytical { background: var(--bg-teal); }
+  .detail-header.analytical .back-btn { color: var(--teal); border-color: var(--teal); }
+  .detail-header.analytical .back-btn:hover { background: var(--teal); color: var(--bg-teal); }
+  .detail-header.analytical .detail-eyebrow,
+  .detail-header.analytical .detail-sub,
+  .detail-header.analytical .detail-meta { color: var(--teal); }
+  .detail-header.analytical .detail-title { color: #064535; }
+
+  .detail-header.inorganic { background: var(--bg-coral); }
+  .detail-header.inorganic .back-btn { color: var(--coral); border-color: var(--coral); }
+  .detail-header.inorganic .back-btn:hover { background: var(--coral); color: var(--bg-coral); }
+  .detail-header.inorganic .detail-eyebrow,
+  .detail-header.inorganic .detail-sub,
+  .detail-header.inorganic .detail-meta { color: var(--coral); }
+  .detail-header.inorganic .detail-title { color: #5a1f0a; }
+
+  .detail-header.process { background: var(--bg-process); }
+  .detail-header.process .back-btn { color: var(--accent); border-color: var(--accent); }
+  .detail-header.process .back-btn:hover { background: var(--accent); color: var(--bg-process); }
+  .detail-header.process .detail-eyebrow,
+  .detail-header.process .detail-sub,
+  .detail-header.process .detail-meta { color: var(--accent); }
+  .detail-header.process .detail-title { color: #4a1d0c; }
+  .detail-header .container { position: relative; }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--purple);
+    background: none;
+    border: 1px solid var(--purple);
+    padding: 8px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 36px;
+    transition: all 0.15s;
+  }
+  .back-btn:hover { background: var(--purple); color: var(--bg-purple); }
+  .detail-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--purple);
+    margin-bottom: 16px;
+  }
+  .detail-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(40px, 5vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #26215c;
+    max-width: 800px;
+    margin-bottom: 20px;
+  }
+  .detail-title em { font-style: italic; }
+  .detail-sub {
+    font-size: 17px;
+    color: var(--purple);
+    max-width: 600px;
+    margin-bottom: 24px;
+  }
+  .detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--purple);
+  }
+
+  .detail-body { padding: 60px 0; }
+  .detail-section { margin-bottom: 56px; }
+  .detail-section h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule-soft);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .detail-section h2 .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+  .detail-section p {
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 14px;
+    max-width: 720px;
+  }
+  .detail-section p strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+  }
+
+  .software-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+  }
+  .software-card {
+    background: var(--paper);
+    padding: 20px 24px;
+  }
+  .software-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .software-card .value {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .chart-wrap {
+    background: var(--paper-warm);
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    padding: 28px;
+    height: 320px;
+    margin: 20px 0;
+  }
+
+  .findings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+    margin: 20px 0 24px;
+  }
+  .finding {
+    background: var(--paper);
+    padding: 24px;
+  }
+  .finding-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 36px;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .finding-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container, nav.topbar .inner { padding: 0 20px; }
+    nav.topbar .inner { padding: 14px 20px; }
+    .nav-links { gap: 14px; font-size: 10px; }
+    .hero { padding: 60px 0 50px; }
+    .section { padding: 56px 0; }
+    .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    .contact-prose { font-size: 22px; }
+    .section-head { flex-wrap: wrap; }
+    .section-aside { width: 100%; margin-left: 0; }
+    .hero-decor { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== MAIN VIEW ==================== -->
+<div class="main-view">
+
+  <nav class="topbar">
+    <div class="inner">
+      <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})">Lab notebook<span class="dot">.</span></div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">Process R&amp;D · Materials &amp; computational chemistry · Portfolio · 2026</div>
+      <h1>From route scouting <em>to apatite layers.</em></h1>
+      <p class="hero-sub">Twenty years of pharmaceutical process development across APIs and intermediates, paired with computational and materials chemistry research. A working portfolio of the projects, the methods, and the results behind each.</p>
+      <div class="hero-tags">
+        <span class="tag process">Process R&amp;D</span>
+        <span class="tag organic">Organic / synthesis</span>
+        <span class="tag analytical">Analytical / instrumental</span>
+        <span class="tag inorganic">Inorganic / materials</span>
+      </div>
+
+      <svg class="hero-decor" width="300" height="240" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#8b3a1f" stroke-width="1" fill="none">
+          <circle cx="80" cy="60" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="140" cy="80" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="200" cy="60" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="110" cy="130" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="170" cy="130" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="80" cy="180" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="140" cy="200" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <circle cx="200" cy="180" r="6" fill="#8b3a1f" fill-opacity="0.3"/>
+          <line x1="80" y1="60" x2="140" y2="80"/>
+          <line x1="140" y1="80" x2="200" y2="60"/>
+          <line x1="140" y1="80" x2="110" y2="130"/>
+          <line x1="140" y1="80" x2="170" y2="130"/>
+          <line x1="110" y1="130" x2="80" y2="180"/>
+          <line x1="170" y1="130" x2="200" y2="180"/>
+          <line x1="110" y1="130" x2="140" y2="200"/>
+          <line x1="170" y1="130" x2="140" y2="200"/>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-num">01 / About</span>
+        <h2 class="section-title">About</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-prose">
+          <p>I'm a <em>process R&amp;D chemist</em> with twenty years of experience moving APIs and intermediates from route scouting through GMP scale-up. Currently Associate Principal Scientist at PharmaBlock Sciences USA, leading client-facing CDMO development projects.</p>
+          <p>My PhD in biomaterial chemistry at VIT University produced novel sol-gel-combustion routes to silver- and zinc-doped wollastonite bioceramics — work that bridges materials chemistry, characterization, and biology.</p>
+          <p>Outside formal roles I work with <em>AI-enabled chemistry workflows</em> — chemistry data annotation, scientific response evaluation, and model review across SMILES, SMARTS, and InChI representations.</p>
+        </div>
+        <div class="about-side">
+          <ul>
+            <li>
+              <div class="role">Associate Principal Scientist</div>
+              <div class="where">PharmaBlock Sciences Inc., USA · CDMO</div>
+              <div class="when">2022 — present</div>
+            </li>
+            <li>
+              <div class="role">Assistant Director</div>
+              <div class="where">PharmaBlock Sciences, China · Process R&amp;D</div>
+              <div class="when">2019 — 2022</div>
+            </li>
+            <li>
+              <div class="role">Technical Team Lead</div>
+              <div class="where">Zhejiang Menovo Pharma, China · Valsartan DMF</div>
+              <div class="when">2017 — 2019</div>
+            </li>
+            <li>
+              <div class="role">Chief Scientist</div>
+              <div class="where">BSAZ Biotech, China · API process optimization</div>
+              <div class="when">2015 — 2017</div>
+            </li>
+            <li>
+              <div class="role">Earlier roles</div>
+              <div class="where">Orchid Pharma · Sai Life Sciences · AVRA Labs (India)</div>
+              <div class="when">2005 — 2015</div>
+            </li>
+            <li>
+              <div class="role">PhD, Biomaterial Chemistry</div>
+              <div class="where">VIT University, Vellore</div>
+              <div class="when">2019</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-num">02 / Selected work</span>
+        <h2 class="section-title">Projects</h2>
+        <span class="section-aside">Click any to expand</span>
+      </div>
+
+      <div class="filters" id="filters" role="group" aria-label="Filter projects">
+        <button class="filter-btn" aria-pressed="true" data-filter="all">All</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="process">Process R&amp;D</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="organic">Organic</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="analytical">Analytical</button>
+        <button class="filter-btn" aria-pressed="false" data-filter="inorganic">Inorganic</button>
+      </div>
+
+      <div class="projects" id="projects-grid">
+
+        <article class="project" data-cat="process" data-detail="api-cdmo">
+          <div class="project-vis process">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <!-- Funnel motif: discovery → development → delivery -->
+              <g fill="none" stroke="#8b3a1f" stroke-width="1.2">
+                <path d="M 15 18 L 105 18 L 75 42 L 75 62 L 45 62 L 45 42 Z"/>
+              </g>
+              <circle cx="30" cy="24" r="2" fill="#8b3a1f"/>
+              <circle cx="45" cy="24" r="2" fill="#8b3a1f"/>
+              <circle cx="60" cy="24" r="2" fill="#8b3a1f"/>
+              <circle cx="75" cy="24" r="2" fill="#8b3a1f"/>
+              <circle cx="90" cy="24" r="2" fill="#8b3a1f"/>
+              <circle cx="60" cy="50" r="3" fill="#8b3a1f"/>
+              <line x1="58" y1="68" x2="62" y2="68" stroke="#8b3a1f" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="project-cat">Process R&amp;D · CDMO · current role</div>
+          <h3 class="project-title">API process R&amp;D — CDMO portfolio</h3>
+          <p class="project-desc">Leading client-facing FTE projects at PharmaBlock USA: route scouting, optimization, and scale-up of intermediates and APIs from discovery into development.</p>
+          <div class="project-tools"><span class="tool">FTE delivery</span><span class="tool">DOE</span><span class="tool">Team of 8</span><span class="tool">Client communication</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="process" data-detail="scale-up">
+          <div class="project-vis process">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <!-- Increasing flask sizes -->
+              <g fill="none" stroke="#8b3a1f" stroke-width="1.2">
+                <path d="M 18 32 L 18 38 L 14 50 L 28 50 L 24 38 L 24 32 Z"/>
+                <path d="M 42 28 L 42 36 L 36 52 L 56 52 L 50 36 L 50 28 Z"/>
+                <path d="M 72 22 L 72 34 L 62 56 L 90 56 L 80 34 L 80 22 Z"/>
+                <rect x="98" y="22" width="14" height="34"/>
+              </g>
+              <line x1="14" y1="58" x2="112" y2="58" stroke="#8b3a1f" stroke-width="0.5"/>
+              <text x="14" y="68" font-family="monospace" font-size="6" fill="#8b3a1f">100g</text>
+              <text x="38" y="68" font-family="monospace" font-size="6" fill="#8b3a1f">1kg</text>
+              <text x="66" y="68" font-family="monospace" font-size="6" fill="#8b3a1f">10kg</text>
+              <text x="96" y="68" font-family="monospace" font-size="6" fill="#8b3a1f">GMP</text>
+            </svg>
+          </div>
+          <div class="project-cat">Process R&amp;D · Scale-up · multi-employer</div>
+          <h3 class="project-title">Lab-to-GMP scale-up</h3>
+          <p class="project-desc">Translated API processes from grams to multi-kilo GMP manufacturing across Sai Life, Orchid, and BSAZ — yield improvement, robustness, impurity control.</p>
+          <div class="project-tools"><span class="tool">Tech transfer</span><span class="tool">PAT</span><span class="tool">Crystallization</span><span class="tool">DOE</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="process" data-detail="valsartan">
+          <div class="project-vis process">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <!-- Stylized molecule motif + DMF doc -->
+              <g fill="none" stroke="#8b3a1f" stroke-width="1.2">
+                <polygon points="30,30 42,24 54,30 54,42 42,48 30,42"/>
+                <polygon points="54,30 66,24 78,30 78,42 66,48 54,42"/>
+                <line x1="78" y1="36" x2="88" y2="32"/>
+                <line x1="88" y1="32" x2="92" y2="22"/>
+                <rect x="88" y="44" width="16" height="20"/>
+                <line x1="91" y1="50" x2="101" y2="50"/>
+                <line x1="91" y1="54" x2="101" y2="54"/>
+                <line x1="91" y1="58" x2="98" y2="58"/>
+              </g>
+              <text x="92" y="42" font-family="monospace" font-size="5" fill="#8b3a1f">DMF</text>
+            </svg>
+          </div>
+          <div class="project-cat">Process R&amp;D · DMF filing · Menovo Pharma</div>
+          <h3 class="project-title">Valsartan DMF &amp; impurity strategy</h3>
+          <p class="project-desc">Led the Drug Master File preparation for Valsartan at Menovo Pharma — scalable synthetic route design, impurity profiling, and process controls for regulatory submission.</p>
+          <div class="project-tools"><span class="tool">DMF</span><span class="tool">ICH Q3A/B</span><span class="tool">Tetrazole chemistry</span><span class="tool">GC/HPLC</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="process" data-detail="purity-99-8">
+          <div class="project-vis process">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <!-- Purity gauge -->
+              <g fill="none" stroke="#8b3a1f" stroke-width="1.5">
+                <path d="M 20 55 A 40 40 0 0 1 100 55"/>
+              </g>
+              <g fill="none" stroke="rgba(139,58,31,0.3)" stroke-width="6" stroke-linecap="round">
+                <path d="M 22 53 A 38 38 0 0 1 98 53"/>
+              </g>
+              <g fill="none" stroke="#8b3a1f" stroke-width="6" stroke-linecap="round">
+                <path d="M 22 53 A 38 38 0 0 1 96 50"/>
+              </g>
+              <line x1="60" y1="55" x2="90" y2="28" stroke="#8b3a1f" stroke-width="2"/>
+              <circle cx="60" cy="55" r="3" fill="#8b3a1f"/>
+              <text x="40" y="72" font-family="monospace" font-size="9" fill="#8b3a1f" font-weight="bold">99.8%</text>
+            </svg>
+          </div>
+          <div class="project-cat">Process R&amp;D · Purification · BSAZ Biotech</div>
+          <h3 class="project-title">Dasabuvir — high-purity API</h3>
+          <p class="project-desc">Simple, efficient final-stage purification for Dasabuvir at BSAZ Biotech, delivering &gt;99.8% API purity through crystallization-driven rejection of impurities rather than chromatography.</p>
+          <div class="project-tools"><span class="tool">Crystallization</span><span class="tool">Impurity rejection</span><span class="tool">Solvent screening</span><span class="tool">Trace metals</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="organic" data-detail="suvorexant">
+          <div class="project-vis organic">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <!-- Stylized fused-ring + chiral motif -->
+              <g fill="none" stroke="#3c3489" stroke-width="1.2">
+                <polygon points="28,32 40,26 52,32 52,46 40,52 28,46"/>
+                <polygon points="52,32 64,26 76,32 76,46 64,52 52,46"/>
+                <line x1="76" y1="36" x2="86" y2="32"/>
+                <line x1="86" y1="32" x2="92" y2="22"/>
+                <line x1="86" y1="32" x2="96" y2="42"/>
+                <line x1="40" y1="26" x2="40" y2="16"/>
+                <circle cx="40" cy="14" r="3"/>
+              </g>
+              <text x="40" y="68" font-family="monospace" font-size="6" fill="#3c3489">DORA</text>
+              <text x="76" y="68" font-family="monospace" font-size="6" fill="#3c3489">chiral</text>
+            </svg>
+          </div>
+          <div class="project-cat">Organic · API process · BSAZ Biotech</div>
+          <h3 class="project-title">Suvorexant process optimization</h3>
+          <p class="project-desc">Process development of Suvorexant — a dual orexin-receptor antagonist (DORA) for insomnia — through stereochemistry-aware route work, intermediate purification, and crystallization control.</p>
+          <div class="project-tools"><span class="tool">Stereochemistry</span><span class="tool">Diazepane chemistry</span><span class="tool">DOE</span><span class="tool">HPLC</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="organic" data-detail="darifenacin">
+          <div class="project-vis organic">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <!-- Pyrrolidine + benzofuran + amide motif -->
+              <g fill="none" stroke="#3c3489" stroke-width="1.2">
+                <polygon points="22,38 30,28 42,30 44,42 32,48"/>
+                <polygon points="50,30 62,26 74,32 70,44 56,42"/>
+                <line x1="74" y1="32" x2="82" y2="26"/>
+                <line x1="82" y1="26" x2="92" y2="30"/>
+                <circle cx="62" cy="26" r="2.5" fill="#3c3489"/>
+                <text x="60" y="20" font-family="monospace" font-size="6" fill="#3c3489">N</text>
+                <line x1="44" y1="42" x2="50" y2="42"/>
+              </g>
+              <text x="30" y="68" font-family="monospace" font-size="6" fill="#3c3489">·HBr</text>
+              <text x="70" y="68" font-family="monospace" font-size="6" fill="#3c3489">M3 antagonist</text>
+            </svg>
+          </div>
+          <div class="project-cat">Organic · API process · Orchid Pharma</div>
+          <h3 class="project-title">Darifenacin·HBr — route &amp; kilo-lab</h3>
+          <p class="project-desc">Route feasibility, optimization, and kilo-lab validation of Darifenacin hydrobromide — a selective M3 muscarinic antagonist for overactive bladder.</p>
+          <div class="project-tools"><span class="tool">Route feasibility</span><span class="tool">Kilo-lab</span><span class="tool">Salt formation</span><span class="tool">Validation</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="inorganic" data-detail="ag-casio3">
+          <div class="project-vis inorganic">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <!-- Crystal lattice + Ag dopant motif -->
+              <g stroke="#993C1D" stroke-width="0.8" fill="none">
+                <path d="M 25 25 L 45 15 L 65 25 L 65 45 L 45 55 L 25 45 Z"/>
+                <path d="M 55 35 L 75 25 L 95 35 L 95 55 L 75 65 L 55 55 Z"/>
+                <line x1="65" y1="25" x2="75" y2="25"/>
+                <line x1="65" y1="45" x2="75" y2="65"/>
+              </g>
+              <circle cx="45" cy="35" r="3" fill="#993C1D"/>
+              <circle cx="75" cy="45" r="3" fill="#993C1D"/>
+              <circle cx="60" cy="40" r="4" fill="#D85A30" stroke="#993C1D" stroke-width="0.8"/>
+              <text x="58" y="43" font-family="monospace" font-size="6" fill="#fff">Ag</text>
+            </svg>
+          </div>
+          <div class="project-cat">Inorganic · Bioceramic · Published</div>
+          <h3 class="project-title">Ag-doped CaSiO₃ bioceramic</h3>
+          <p class="project-desc">Sol-gel combustion synthesis of silver-doped wollastonite with apatite-forming ability, antibacterial activity, and MG-63 cytocompatibility.</p>
+          <div class="project-tools"><span class="tool">Sol-gel combustion</span><span class="tool">XRD</span><span class="tool">SEM-EDS</span><span class="tool">FT-IR</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+        <article class="project" data-cat="inorganic" data-detail="zn-casio3">
+          <div class="project-vis inorganic">
+            <svg viewBox="0 0 120 80" width="120" height="80">
+              <!-- Porous bioceramic motif with cells -->
+              <g fill="none" stroke="#993C1D" stroke-width="0.8">
+                <circle cx="35" cy="30" r="8"/>
+                <circle cx="55" cy="42" r="10"/>
+                <circle cx="78" cy="28" r="7"/>
+                <circle cx="42" cy="55" r="9"/>
+                <circle cx="72" cy="55" r="8"/>
+                <circle cx="95" cy="48" r="6"/>
+              </g>
+              <g fill="#D85A30">
+                <circle cx="35" cy="30" r="2"/>
+                <circle cx="55" cy="42" r="2"/>
+                <circle cx="78" cy="28" r="2"/>
+                <circle cx="42" cy="55" r="2"/>
+                <circle cx="72" cy="55" r="2"/>
+              </g>
+              <text x="50" y="20" font-family="monospace" font-size="6" fill="#993C1D">Zn²⁺</text>
+            </svg>
+          </div>
+          <div class="project-cat">Inorganic · Bioceramic · Published</div>
+          <h3 class="project-title">Zn-doped CaSiO₃ bioceramic</h3>
+          <p class="project-desc">Zinc-substituted wollastonite for bone tissue engineering — porous morphology, enhanced antibacterial action, and good osteoblast compatibility.</p>
+          <div class="project-tools"><span class="tool">Sol-gel combustion</span><span class="tool">XRD</span><span class="tool">TGA</span><span class="tool">DLS</span><span class="tool">TEM</span></div>
+          <span class="project-arrow">Read more</span>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-num">03 / Stack</span>
+        <h2 class="section-title">Skills &amp; tools</h2>
+      </div>
+      <div class="skills">
+        <div class="skill"><div class="skill-label">Process R&amp;D</div><div class="skill-value">Route scouting, optimization, scale-up</div></div>
+        <div class="skill"><div class="skill-label">API development</div><div class="skill-value">Intermediates, NCEs, GMP manufacturing</div></div>
+        <div class="skill"><div class="skill-label">Regulatory</div><div class="skill-value">CMC, DMF filing, impurity control</div></div>
+        <div class="skill"><div class="skill-label">Experimental design</div><div class="skill-value">DOE, statistical optimization</div></div>
+        <div class="skill"><div class="skill-label">Materials chemistry</div><div class="skill-value">Sol-gel combustion, bioceramics</div></div>
+        <div class="skill"><div class="skill-label">Characterization</div><div class="skill-value">XRD, FT-IR, SEM-EDS, TEM, TGA, DLS</div></div>
+        <div class="skill"><div class="skill-label">AI &amp; chemistry data</div><div class="skill-value">SMILES, SMARTS, InChI, model evaluation</div></div>
+        <div class="skill"><div class="skill-label">Leadership</div><div class="skill-value">CDMO project management, team of 8</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-num">04 / Reach out</span>
+        <h2 class="section-title">Contact</h2>
+      </div>
+      <div class="contact-grid">
+        <p class="contact-prose">Open to <em>collaborations,</em> CDMO partnerships, roles, and conversations about process development.</p>
+        <ul class="contact-list">
+          <li><span class="label">Email</span><span class="value"><a href="mailto:drvmr83@gmail.com">drvmr83@gmail.com</a></span></li>
+          <li><span class="label">Scholar</span><span class="value"><a href="https://scholar.google.com/citations?user=H7CWqPEAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar →</a></span></li>
+          <li><span class="label">GitHub</span><span class="value"><a href="https://github.com/vatdheck-netizen" target="_blank" rel="noopener">@vatdheck-netizen</a></span></li>
+          <li><span class="label">ORCID</span><span class="value"><a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noopener">0000-0000-0000-0000</a></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:12px;">
+      <span>© 2026 · Computational chemistry portfolio</span>
+      <span>Built as a static site · hosted on GitHub Pages</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ==================== API CDMO DETAIL ==================== -->
+<div class="detail-view" id="detail-api-cdmo">
+  <section class="detail-header process">
+    <div class="container">
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+      <div class="detail-eyebrow">Project 01 · Process R&amp;D · PharmaBlock Sciences · current</div>
+      <h1 class="detail-title">API process R&amp;D — <em>CDMO portfolio</em></h1>
+      <p class="detail-sub">Leading client-facing FTE process development at PharmaBlock USA: route scouting, optimization, scale-up, and tech transfer of intermediates and APIs.</p>
+      <div class="detail-meta">
+        <span>Associate Principal Scientist</span><span>·</span><span>Team of 8 chemists</span><span>·</span><span>Multiple active FTEs</span>
+      </div>
+    </div>
+  </section>
+  <div class="detail-body">
+    <div class="container">
+      <div class="detail-section">
+        <h2><span class="num">§ 1</span>Role &amp; scope</h2>
+        <p>As Associate Principal Scientist in the CDMO division, I lead client-facing full-time-equivalent (FTE) process development projects from discovery-stage compounds through to development-stage hand-off. The work spans <strong>route scouting, process optimization, impurity profiling, and scale-up</strong> across a diverse compound portfolio, with direct accountability for technical delivery and client communication.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 2</span>What this typically involves</h2>
+        <div class="software-grid">
+          <div class="software-card"><div class="label">Route scouting</div><div class="value">Literature analysis, retrosynthetic options, IP landscape</div></div>
+          <div class="software-card"><div class="label">Optimization</div><div class="value">DOE, solvent / catalyst / stoichiometry screening</div></div>
+          <div class="software-card"><div class="label">Analytical</div><div class="value">HPLC, GC, NMR, LC-MS impurity tracking</div></div>
+          <div class="software-card"><div class="label">Scale-up</div><div class="value">Lab → kilo lab → pilot, robustness studies</div></div>
+          <div class="software-card"><div class="label">Client interface</div><div class="value">Weekly technical updates, milestone reviews</div></div>
+          <div class="software-card"><div class="label">Team</div><div class="value">8 chemists, mentoring &amp; project allocation</div></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 3</span>How a typical project moves</h2>
+        <p>Initial assessment of the client's discovery route, identification of bottlenecks (low-yielding steps, costly reagents, problematic impurities, scale-up risks), parallel exploration of alternative chemistries, and DOE-driven optimization of the chosen route. Each project culminates in a process description with confirmed impurity control points, ready for tech transfer or further development.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 4</span>Active project portfolio (representative snapshot)</h2>
+        <div class="chart-wrap"><canvas id="cdmo-chart"></canvas></div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 5</span>Key contributions</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding-num">8</div><div class="finding-label">chemists managed</div></div>
+          <div class="finding"><div class="finding-num">3+</div><div class="finding-label">years CDMO leadership</div></div>
+          <div class="finding"><div class="finding-num">20+</div><div class="finding-label">years total experience</div></div>
+        </div>
+        <p>Track record of moving discovery-stage compounds to development through technically sound, scalable processes. Direct client engagement experience across multiple therapeutic areas and process types.</p>
+      </div>
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCALE-UP DETAIL ==================== -->
+<div class="detail-view" id="detail-scale-up">
+  <section class="detail-header process">
+    <div class="container">
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+      <div class="detail-eyebrow">Project 02 · Process R&amp;D · 2005 — present</div>
+      <h1 class="detail-title">Lab-to-GMP <em>scale-up</em></h1>
+      <p class="detail-sub">Multi-employer expertise translating API processes from gram scale through multi-kilogram GMP manufacturing — yield improvement, robustness, and impurity control along the way.</p>
+      <div class="detail-meta">
+        <span>Sai Life Sciences</span><span>·</span><span>Orchid Pharma</span><span>·</span><span>BSAZ Biotech</span><span>·</span><span>PharmaBlock</span>
+      </div>
+    </div>
+  </section>
+  <div class="detail-body">
+    <div class="container">
+      <div class="detail-section">
+        <h2><span class="num">§ 1</span>The scale-up problem</h2>
+        <p>Reactions that work cleanly at 100 mg often fail at 100 kg. Heat removal becomes rate-limiting, mixing is no longer instantaneous, addition rates start to matter, and impurities that were invisible at lab scale become specification-defining at pilot scale. <strong>Bridging this gap reliably</strong> is the core of process chemistry — and the focus of my work across multiple employers from 2005 onwards.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 2</span>Toolkit</h2>
+        <div class="software-grid">
+          <div class="software-card"><div class="label">Reaction redesign</div><div class="value">Concentration, addition order, temp profiles</div></div>
+          <div class="software-card"><div class="label">DOE</div><div class="value">Factorial &amp; response-surface, JMP / Minitab</div></div>
+          <div class="software-card"><div class="label">Crystallization</div><div class="value">Solvent / antisolvent screening, polymorph control</div></div>
+          <div class="software-card"><div class="label">Impurity strategy</div><div class="value">Spike studies, fate &amp; purge mapping</div></div>
+          <div class="software-card"><div class="label">Equipment scale</div><div class="value">Lab → 5 L → 100 L → 1000 L</div></div>
+          <div class="software-card"><div class="label">Quality systems</div><div class="value">cGMP, OOS investigation, batch records</div></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 3</span>Workflow</h2>
+        <p>Process characterization at lab scale (identify critical process parameters via DOE), risk assessment for each unit operation, demonstration runs at intermediate scale to confirm scaling rules, tech-transfer package for the manufacturing site (process description, ranges, in-process controls, analytical methods), and on-site support during first GMP campaigns.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 4</span>Yield improvement across scale (representative)</h2>
+        <div class="chart-wrap"><canvas id="scale-chart"></canvas></div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 5</span>Track record</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding-num">multi-kg</div><div class="finding-label">GMP campaigns delivered</div></div>
+          <div class="finding"><div class="finding-num">OOS</div><div class="finding-label">investigations resolved</div></div>
+          <div class="finding"><div class="finding-num">cGMP</div><div class="finding-label">compliant processes</div></div>
+        </div>
+        <p>Hands-on experience scaling APIs to multi-kilogram production at Sai Life Sciences (2008–2011), resolving out-of-specification batches and supporting tech transfer at Orchid Pharma (2011–2015), and leading high-purity process establishment at BSAZ Biotech (2015–2017).</p>
+      </div>
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== VALSARTAN DETAIL ==================== -->
+<div class="detail-view" id="detail-valsartan">
+  <section class="detail-header process">
+    <div class="container">
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+      <div class="detail-eyebrow">Project 03 · Process R&amp;D · Zhejiang Menovo Pharma · 2017–2019</div>
+      <h1 class="detail-title">Valsartan <em>DMF &amp; impurity strategy</em></h1>
+      <p class="detail-sub">As Technical Team Lead at Menovo Pharma, led the Drug Master File preparation for Valsartan — scalable synthetic route design, impurity profiling, and process controls for regulatory submission.</p>
+      <div class="detail-meta">
+        <span>Technical Team Lead</span><span>·</span><span>DMF filing</span><span>·</span><span>Angiotensin II receptor blocker</span>
+      </div>
+    </div>
+  </section>
+  <div class="detail-body">
+    <div class="container">
+      <div class="detail-section">
+        <h2><span class="num">§ 1</span>Context</h2>
+        <p>Valsartan is a widely prescribed angiotensin II receptor blocker for hypertension. Following well-publicized nitrosamine contamination issues across the sartan class, regulatory scrutiny on Valsartan manufacturing routes has been intense. This project supported a <strong>complete DMF</strong> with scalable chemistry, fully characterized impurity profile, and process controls aligned to ICH Q3A/B expectations.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 2</span>What the DMF needed</h2>
+        <div class="software-grid">
+          <div class="software-card"><div class="label">Synthetic route</div><div class="value">Scalable, IP-clean, cost-effective chemistry</div></div>
+          <div class="software-card"><div class="label">Impurity profile</div><div class="value">Identification, synthesis, qualification of each</div></div>
+          <div class="software-card"><div class="label">Specifications</div><div class="value">In-process and final API limits with rationale</div></div>
+          <div class="software-card"><div class="label">Analytical methods</div><div class="value">Validated HPLC, GC, residual solvents, ICP-MS</div></div>
+          <div class="software-card"><div class="label">Genotoxic risk</div><div class="value">Mutagenic-impurity assessment, including azides</div></div>
+          <div class="software-card"><div class="label">Documentation</div><div class="value">DMF Module 3 sections, process description</div></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 3</span>Workflow</h2>
+        <p>Designed the synthetic route around the tetrazole installation chemistry that defines the sartan family, then mapped each known and potential impurity (synthetic intermediates, regio-isomers, degradation products, and the genotoxic-flagged azide/nitrosamine-related species). Established analytical methods sensitive enough to track impurities at the &lt;0.10% level. Wrote the process description and control strategy sections of the DMF.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 4</span>Impurity reduction through optimization</h2>
+        <div class="chart-wrap"><canvas id="vals-chart"></canvas></div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 5</span>Key contributions</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding-num">DMF</div><div class="finding-label">filed</div></div>
+          <div class="finding"><div class="finding-num">&lt;0.10%</div><div class="finding-label">individual impurity targets</div></div>
+          <div class="finding"><div class="finding-num">ICH Q3A/B</div><div class="finding-label">aligned</div></div>
+        </div>
+        <p>The DMF filing supported Menovo's commercial Valsartan supply. Tetrazole-installation chemistry was redesigned around safer alternatives, and the impurity-control strategy explicitly addressed the genotoxic species that have driven recalls in this class.</p>
+      </div>
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HIGH PURITY DETAIL ==================== -->
+<div class="detail-view" id="detail-purity-99-8">
+  <section class="detail-header process">
+    <div class="container">
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+      <div class="detail-eyebrow">Project 04 · Process R&amp;D · BSAZ Biotech · 2015–2017</div>
+      <h1 class="detail-title">Dasabuvir — <em>high-purity API</em></h1>
+      <p class="detail-sub">As Chief Scientist at BSAZ Biotech, established a simple, efficient final-stage purification for Dasabuvir delivering &gt;99.8% API purity — without chromatography, through crystallization-driven rejection of impurities.</p>
+      <div class="detail-meta">
+        <span>Chief Scientist</span><span>·</span><span>Dasabuvir &gt; 99.8%</span><span>·</span><span>Chromatography-free</span>
+      </div>
+    </div>
+  </section>
+  <div class="detail-body">
+    <div class="container">
+      <div class="detail-section">
+        <h2><span class="num">§ 1</span>The purity bar</h2>
+        <p>Dasabuvir is a non-nucleoside NS5B inhibitor used in HCV combination therapies (ABT-333) — and notoriously demanding to purify cleanly at scale. The difference between 99.0% and 99.85% purity often decides whether a process is commercially viable. Chromatography to clean up a final-step impurity may work at gram scale but is rarely affordable at production scale. The challenge: <strong>get the purity by chemistry and crystallization</strong>, not by column.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 2</span>Strategy</h2>
+        <div class="software-grid">
+          <div class="software-card"><div class="label">Reaction redesign</div><div class="value">Eliminate impurity-generating steps where possible</div></div>
+          <div class="software-card"><div class="label">Solvent screening</div><div class="value">High-throughput solvent / antisolvent panels</div></div>
+          <div class="software-card"><div class="label">Crystallization</div><div class="value">Seeding, cooling profiles, polymorph control</div></div>
+          <div class="software-card"><div class="label">Impurity rejection</div><div class="value">Mother-liquor analysis, recrystallization loops</div></div>
+          <div class="software-card"><div class="label">Trace metals</div><div class="value">ICP-MS monitoring, scavenger studies</div></div>
+          <div class="software-card"><div class="label">Polish steps</div><div class="value">Filtration through silica or carbon when justified</div></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 3</span>Workflow</h2>
+        <p>Spike studies to understand which impurities rejected well from which solvent systems. Crystallization mapping — temperature, supersaturation, seeding — to land on a robust crystallization that gave both the right polymorph and the right purity. Iterated through several rounds with HPLC and ICP-MS feedback until the process reliably gave &gt;99.8% material run after run.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 4</span>Purity progression through optimization rounds</h2>
+        <div class="chart-wrap"><canvas id="purity-chart"></canvas></div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 5</span>Outcomes</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding-num">&gt;99.8%</div><div class="finding-label">final API purity</div></div>
+          <div class="finding"><div class="finding-num">0</div><div class="finding-label">chromatography in commercial process</div></div>
+          <div class="finding"><div class="finding-num">robust</div><div class="finding-label">crystallization &amp; polymorph control</div></div>
+        </div>
+        <p>The optimized processes delivered specification-compliant API consistently at production scale, with crystallization-driven purification rather than chromatography. Polymorph behavior was characterized and locked in.</p>
+      </div>
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SUVOREXANT DETAIL ==================== -->
+<div class="detail-view" id="detail-suvorexant">
+  <section class="detail-header">
+    <div class="container">
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+      <div class="detail-eyebrow">Project 05 · Organic · BSAZ Biotech · 2015–2017</div>
+      <h1 class="detail-title"><em>Suvorexant</em> process optimization</h1>
+      <p class="detail-sub">Process development of Suvorexant — a dual orexin-receptor antagonist (DORA) for insomnia, marketed as Belsomra — including route refinement, stereocontrol of the diazepane core, and crystallization-driven purification of intermediates and API.</p>
+      <div class="detail-meta">
+        <span>Chief Scientist</span><span>·</span><span>DORA class</span><span>·</span><span>Insomnia therapeutic</span>
+      </div>
+    </div>
+  </section>
+  <div class="detail-body">
+    <div class="container">
+      <div class="detail-section">
+        <h2><span class="num">§ 1</span>Why Suvorexant is interesting chemistry</h2>
+        <p>Suvorexant (Belsomra) carries a 7-membered <strong>chiral diazepane core</strong> linking a benzimidazole and a fluorinated chloropyrimidine through carefully placed amide bonds. The stereochemistry is non-negotiable — the (R)-configuration drives the activity. From a process standpoint, the challenges are stereoselectivity, controlling the regiochemistry of the amide couplings, and getting clean crystalline material from an oily, polar, lipophilic API.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 2</span>What I worked on</h2>
+        <div class="software-grid">
+          <div class="software-card"><div class="label">Route work</div><div class="value">Diazepane assembly, stereoselective alkylation</div></div>
+          <div class="software-card"><div class="label">Amide couplings</div><div class="value">Reagent and condition screening for regio control</div></div>
+          <div class="software-card"><div class="label">Intermediate quality</div><div class="value">Recrystallization protocols for key intermediates</div></div>
+          <div class="software-card"><div class="label">API crystallization</div><div class="value">Solvent / antisolvent panels, seeding studies</div></div>
+          <div class="software-card"><div class="label">Analytical control</div><div class="value">Chiral HPLC, achiral HPLC, GC residual solvents</div></div>
+          <div class="software-card"><div class="label">Team</div><div class="value">3 chemists, daily work allocation &amp; troubleshooting</div></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 3</span>Workflow</h2>
+        <p>Re-examined each step of the literature/reference route for scalability and impurity formation. Identified the steps that generated the most problematic side-products (regio-isomers from the unsymmetrical amide couplings and the diastereomer arising from incomplete stereocontrol), then optimized those conditions through DOE. Developed crystallization protocols that purged the key impurities to within specification at production scale.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 4</span>Process improvements through optimization</h2>
+        <div class="chart-wrap"><canvas id="suvo-chart"></canvas></div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 5</span>Outcomes</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding-num">stereo</div><div class="finding-label">control verified by chiral HPLC</div></div>
+          <div class="finding"><div class="finding-num">3</div><div class="finding-label">team chemists led</div></div>
+          <div class="finding"><div class="finding-num">DOE</div><div class="finding-label">driven optimization</div></div>
+        </div>
+        <p>The optimized process delivered Suvorexant intermediates and API with consistent quality across runs. The combination of route-level redesign and crystallization-driven purification removed the need for chromatography at any stage of the commercial process.</p>
+      </div>
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DARIFENACIN DETAIL ==================== -->
+<div class="detail-view" id="detail-darifenacin">
+  <section class="detail-header">
+    <div class="container">
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+      <div class="detail-eyebrow">Project 06 · Organic · Orchid Pharma · 2011–2015</div>
+      <h1 class="detail-title"><em>Darifenacin·HBr</em> — route &amp; kilo-lab</h1>
+      <p class="detail-sub">Route feasibility, optimization, and lab + kilo-lab validation of Darifenacin hydrobromide — a selective M3 muscarinic antagonist (Enablex) for overactive bladder.</p>
+      <div class="detail-meta">
+        <span>Sr. Research Associate</span><span>·</span><span>M3 selectivity</span><span>·</span><span>Urology therapeutic</span>
+      </div>
+    </div>
+  </section>
+  <div class="detail-body">
+    <div class="container">
+      <div class="detail-section">
+        <h2><span class="num">§ 1</span>What Darifenacin demands of a process chemist</h2>
+        <p>Darifenacin is built around a (<em>S</em>)-pyrrolidine core bearing two aryl substituents and a flexible alkyl arm tethered to a 2,3-dihydrobenzofuran amide. The molecule's <strong>stereochemistry at the pyrrolidine</strong> is essential to its M3 selectivity. The hydrobromide salt is the marketed form. Process challenges are stereocontrol, late-stage amide coupling without epimerization, and a reproducible HBr salt-formation step that gives the right polymorph.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 2</span>Scope of the work</h2>
+        <div class="software-grid">
+          <div class="software-card"><div class="label">Route feasibility</div><div class="value">Literature retro, IP review, reagent-cost analysis</div></div>
+          <div class="software-card"><div class="label">Optimization</div><div class="value">Solvent / temperature / addition-order screens</div></div>
+          <div class="software-card"><div class="label">Lab validation</div><div class="value">Reproducibility runs at 100 g — 500 g scale</div></div>
+          <div class="software-card"><div class="label">Kilo-lab</div><div class="value">First multi-kilo campaign with in-process controls</div></div>
+          <div class="software-card"><div class="label">Salt formation</div><div class="value">HBr addition profile, crystallization protocol</div></div>
+          <div class="software-card"><div class="label">Analytical</div><div class="value">Chiral HPLC, HPLC, GC, KF, residue on ignition</div></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 3</span>Workflow</h2>
+        <p>Started with feasibility — evaluated multiple synthetic disconnections against cost, IP, and scalability criteria before committing to the development route. Optimized each step with attention to the stereochemical integrity of the pyrrolidine center. Validated the chosen process at lab scale, then transferred to the kilo lab for multi-kilo demonstration runs. Hydrobromide salt formation was studied separately to ensure consistent polymorph and particle-size outcomes.</p>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 4</span>Stage yields through optimization</h2>
+        <div class="chart-wrap"><canvas id="dari-chart"></canvas></div>
+      </div>
+      <div class="detail-section">
+        <h2><span class="num">§ 5</span>Outcomes</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding-num">kilo-lab</div><div class="finding-label">validation delivered</div></div>
+          <div class="finding"><div class="finding-num">(S)</div><div class="finding-label">stereochemistry preserved</div></div>
+          <div class="finding"><div class="finding-num">HBr salt</div><div class="finding-label">crystallization controlled</div></div>
+        </div>
+        <p>The validated process was successfully demonstrated at kilo-lab scale, providing a documented basis for scale-up to GMP manufacturing. Stereochemical integrity was maintained throughout, and the HBr salt was reproducibly isolated in the target polymorph.</p>
+      </div>
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== Ag-CaSiO3 DETAIL ==================== -->
+<div class="detail-view" id="detail-ag-casio3">
+  <section class="detail-header inorganic">
+    <div class="container">
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+      <div class="detail-eyebrow">Project 07 · Inorganic · Materials Technology · 2017</div>
+      <h1 class="detail-title">Ag-doped <em>CaSiO₃</em> bioceramic</h1>
+      <p class="detail-sub">Sol-gel combustion synthesis of silver-doped wollastonite for biomedical applications — apatite formation, antibacterial action, and cytocompatibility with osteoblast-like cells.</p>
+      <div class="detail-meta">
+        <span>Materials Technology (2017)</span><span>·</span><span>DOI: 10.1080/10667857.2017.1389050</span>
+      </div>
+    </div>
+  </section>
+  <div class="detail-body">
+    <div class="container">
+      <div class="detail-section">
+        <h2><span class="num">§ 1</span>Motivation</h2>
+        <p>Wollastonite (β-CaSiO₃) is one of the most promising bioactive calcium silicates for bone regeneration — it forms a chemical bond with natural bone through rapid apatite layer growth in body fluid. However, after implantation pure wollastonite offers little resistance to bacterial colonization, which can cause infection and force a second surgery. This study introduced <strong>silver as a dopant</strong> to give the ceramic intrinsic antibacterial activity without losing its bioactivity, prepared by a novel sol-gel combustion route using glycine as a fuel.</p>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 2</span>Synthesis &amp; characterization stack</h2>
+        <div class="software-grid">
+          <div class="software-card"><div class="label">Synthesis</div><div class="value">Sol-gel combustion, glycine fuel</div></div>
+          <div class="software-card"><div class="label">Compositions</div><div class="value">Ca₁₋ₓAgₓSiO₃ (x = 0, 1, 3, 5 wt%)</div></div>
+          <div class="software-card"><div class="label">Structural</div><div class="value">ATR-FTIR (Shimadzu), powder-XRD (Bruker D8)</div></div>
+          <div class="software-card"><div class="label">Morphology</div><div class="value">SEM-EDS (Hitachi-S4800), TEM-SAED (Tecnai 20G²)</div></div>
+          <div class="software-card"><div class="label">Biology</div><div class="value">SBF immersion, disc diffusion, MTT assay</div></div>
+          <div class="software-card"><div class="label">Statistics</div><div class="value">GraphPad Prism 6, two-way ANOVA</div></div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 3</span>Workflow</h2>
+        <p>Calcium nitrate, TEOS, and glycine were dissolved in distilled water with concentrated HNO₃ (pH ~1), stirred at 85 °C for 5 h to form a transparent gel, aged, then combusted at 400 °C and sintered at 800 °C/3 h to give phase-pure powders. <em>In vitro</em> bioactivity was assessed by immersion in simulated body fluid (SBF, Kokubo recipe) for 7 and 14 days at 37 °C with daily SBF replacement. Antibacterial activity was measured by zone-of-inhibition disc diffusion against <em>E. coli</em> and <em>S. aureus</em>. Cytocompatibility was evaluated by MTT assay on MG-63 osteoblast-like cells at 50–250 µg/mL for 24 and 48 h.</p>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 4</span>Antibacterial activity — zone of inhibition</h2>
+        <div class="chart-wrap"><canvas id="ag-chart"></canvas></div>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 5</span>Key findings</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding-num">38 nm</div><div class="finding-label">crystallite (5 wt% Ag)</div></div>
+          <div class="finding"><div class="finding-num">17 mm</div><div class="finding-label">ZoI vs <em>E. coli</em> (5 wt%)</div></div>
+          <div class="finding"><div class="finding-num">114-119%</div><div class="finding-label">MG-63 cell viability</div></div>
+        </div>
+        <p>Powder-XRD confirmed pure single-phase formation matching JCPDS 43-1460 across all compositions. Crystallite size dropped from 75 nm (pure) to 38 nm at 5 wt% Ag, indicating that silver disrupts long-range ordering. SBF immersion produced ball-like apatite grains within 7 days that progressed to needle-like crystalline HAP by day 14, with Ca/P ratio ≈ 1.67 — close to natural bone. Antibacterial zones grew with Ag content (10 → 17 mm against <em>E. coli</em>, 9 → 15 mm against <em>S. aureus</em>), and <em>E. coli</em> was the more susceptible strain due to its thinner cell wall. Critically, the 5 wt% Ag composition was <strong>non-cytotoxic</strong> to MG-63 cells across all concentrations and timepoints — viability actually <em>increased</em> to 114% (24 h) and 119% (48 h) at 250 µg/mL.</p>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 6</span>Significance</h2>
+        <p>First report of Ag-doped CaSiO₃ via sol-gel combustion using glycine as fuel. The combination of bioactivity (apatite formation), antibacterial action (driven by Ag⁺ release and interaction with microbial DNA), and non-toxicity to bone-forming cells positions the material as a viable candidate for infection-resistant orthopedic and dental implant coatings.</p>
+        <p style="margin-top: 14px;"><a href="https://doi.org/10.1080/10667857.2017.1389050" target="_blank" rel="noopener" style="color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none;">Read the full paper at Materials Technology →</a></p>
+      </div>
+
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== Zn-CaSiO3 DETAIL ==================== -->
+<div class="detail-view" id="detail-zn-casio3">
+  <section class="detail-header inorganic">
+    <div class="container">
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+      <div class="detail-eyebrow">Project 08 · Inorganic · J. Inorg. Organomet. Polym. · 2018</div>
+      <h1 class="detail-title">Zn-doped <em>CaSiO₃</em> bioceramic</h1>
+      <p class="detail-sub">Zinc-substituted wollastonite for bone tissue engineering — porous nanostructure, antibacterial action against gram-positive and gram-negative pathogens, and good MG-63 osteoblast compatibility.</p>
+      <div class="detail-meta">
+        <span>J. Inorg. Organomet. Polym. Mater. (2018)</span><span>·</span><span>DOI: 10.1007/s10904-018-0922-8</span>
+      </div>
+    </div>
+  </section>
+  <div class="detail-body">
+    <div class="container">
+      <div class="detail-section">
+        <h2><span class="num">§ 1</span>Motivation</h2>
+        <p>Zinc is naturally present in human bone as a trace element and plays a direct role in bone metabolism and tissue regeneration. Substituting Zn²⁺ into CaSiO₃ couples bioactivity (apatite formation) with antibacterial behavior and biologically meaningful ion release. This work extended the sol-gel combustion approach to zinc dopants, examining how Zn content modulates <strong>structure, porosity, biology</strong>, and ion release.</p>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 2</span>Synthesis &amp; characterization stack</h2>
+        <div class="software-grid">
+          <div class="software-card"><div class="label">Synthesis</div><div class="value">Sol-gel combustion, glycine fuel</div></div>
+          <div class="software-card"><div class="label">Compositions</div><div class="value">Ca₁₋ₓZnₓSiO₃ (x = 0, 1, 3, 5 wt%)</div></div>
+          <div class="software-card"><div class="label">Structural</div><div class="value">ATR-FTIR, powder-XRD (Bruker D8)</div></div>
+          <div class="software-card"><div class="label">Thermal &amp; size</div><div class="value">TGA (EXSTAR TG/DTA), DLS (Horiba SZ-100)</div></div>
+          <div class="software-card"><div class="label">Morphology</div><div class="value">SEM-EDS (Hitachi-S4800), HR-TEM (Tecnai 20G²)</div></div>
+          <div class="software-card"><div class="label">Biology</div><div class="value">SBF immersion, CFU antibacterial, MTT on MG-63</div></div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 3</span>Workflow</h2>
+        <p>Ca(NO₃)₂·4H₂O, Zn(NO₃)₂, and TEOS were dissolved in distilled water with glycine as fuel; HNO₃ was added (pH ~1) to drive silanol formation and reactivity. The mixture was stirred at 85 °C for 5 h, dried, combusted at 400 °C for 2 h, and sintered at 800 °C for 3 h. <em>In vitro</em> bioactivity was tested by 14-day SBF immersion with daily medium replacement. Antibacterial activity was quantified by <strong>colony forming unit (CFU) counting</strong> against <em>E. coli</em> and <em>S. aureus</em>, while cytocompatibility was probed by MTT assay on MG-63 cells at 200–1000 µg/mL for 24 h.</p>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 4</span>Antibacterial activity — CFU reduction</h2>
+        <div class="chart-wrap"><canvas id="zn-chart"></canvas></div>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 5</span>Key findings</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding-num">42 nm</div><div class="finding-label">crystallite (5 wt% Zn)</div></div>
+          <div class="finding"><div class="finding-num">~90%</div><div class="finding-label"><em>E. coli</em> CFU reduction</div></div>
+          <div class="finding"><div class="finding-num">118%</div><div class="finding-label">MG-63 viability at 200 µg/mL</div></div>
+        </div>
+        <p>XRD confirmed phase-pure formation matching JCPDS 43-1460, with crystallite size decreasing from 128 nm (pure) to 42 nm at 5 wt% Zn — a clear sign of Zn-induced lattice distortion. TGA showed three distinct weight-loss steps (water, nitrates, organics) with phase formation initiating at ~760 °C. SEM and TEM revealed that Zn substitution produced increasingly <strong>porous, aggregated morphology</strong>, while DLS gave hydrodynamic sizes of 108–166 nm. After 14-day SBF immersion, 5 wt% Zn-CaSiO₃ developed dense ball-like apatite crystals on the surface. CFU counting showed dramatic microbial reduction at 5 wt% Zn (<em>E. coli</em>: 7.3 × 10⁶ → 5.8 × 10⁵; <em>S. aureus</em>: 9.8 × 10⁶ → 9.8 × 10⁵). MG-63 cells were non-toxic at 200–600 µg/mL and showed only minor reduction at 800–1000 µg/mL.</p>
+      </div>
+
+      <div class="detail-section">
+        <h2><span class="num">§ 6</span>Significance</h2>
+        <p>First report of Zn-doped CaSiO₃ synthesized by sol-gel combustion. The work confirmed that biologically relevant Zn²⁺ — abundant in natural bone — can be cleanly integrated into the wollastonite lattice and tuned to deliver antibacterial activity without compromising osteoblast viability. The porous architecture is a useful platform for bone tissue engineering.</p>
+        <p style="margin-top: 14px;"><a href="https://doi.org/10.1007/s10904-018-0922-8" target="_blank" rel="noopener" style="color: var(--accent); border-bottom: 1px solid var(--accent); text-decoration: none;">Read the full paper at Springer →</a></p>
+      </div>
+
+      <button class="back-btn" onclick="closeDetail()">← back to portfolio</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Project filtering
+  const filters = document.getElementById('filters');
+  const projects = document.querySelectorAll('#projects-grid .project');
+  filters.addEventListener('click', function(e) {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    filters.querySelectorAll('.filter-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    btn.setAttribute('aria-pressed', 'true');
+    const cat = btn.dataset.filter;
+    projects.forEach(p => {
+      p.style.display = (cat === 'all' || p.dataset.cat === cat) ? '' : 'none';
+    });
+  });
+
+  // Open detail view
+  projects.forEach(p => {
+    p.addEventListener('click', function() {
+      const detailId = p.dataset.detail;
+      if (detailId) {
+        openDetail(detailId);
+      } else {
+        // No detail yet — graceful message
+        alert('Detail page coming soon. Edit index.html to add one.');
+      }
+    });
+  });
+
+  function openDetail(id) {
+    document.body.classList.add('detail-mode');
+    document.querySelectorAll('.detail-view').forEach(d => d.classList.remove('active'));
+    const target = document.getElementById('detail-' + id);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      renderChart(id);
+    }
+  }
+
+  function closeDetail() {
+    document.body.classList.remove('detail-mode');
+    document.querySelectorAll('.detail-view').forEach(d => d.classList.remove('active'));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  // -------- Charts: one per project, lazy-initialized --------
+  const rendered = {};
+  const COLORS = {
+    purple: '#3c3489', accent: '#8b3a1f', teal: '#0f6e56', coral: '#993c1d',
+    muted: '#6b665d', rule: '#d4cfc0'
+  };
+  const baseOpts = (yLabel) => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: '#1a1815', font: { family: 'JetBrains Mono', size: 11 }, boxWidth: 12, padding: 16 } },
+      tooltip: { titleFont: { family: 'JetBrains Mono', size: 11 }, bodyFont: { family: 'Inter', size: 12 } }
+    },
+    scales: {
+      x: { ticks: { color: COLORS.muted, font: { family: 'JetBrains Mono', size: 10 } }, grid: { color: COLORS.rule } },
+      y: {
+        title: { display: !!yLabel, text: yLabel || '', color: COLORS.muted, font: { family: 'JetBrains Mono', size: 11 } },
+        ticks: { color: COLORS.muted, font: { family: 'JetBrains Mono', size: 10 } },
+        grid: { color: COLORS.rule }
+      }
+    }
+  });
+
+  function renderChart(id) {
+    if (typeof Chart === 'undefined' || rendered[id]) return;
+
+    if (id === 'api-cdmo') {
+      const ctx = document.getElementById('cdmo-chart'); if (!ctx) return;
+      // Project stage funnel
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Route scouting', 'Lab dev', 'Pilot scale', 'Tech transfer', 'GMP delivery'],
+          datasets: [
+            { label: 'projects (active portfolio)', data: [12, 9, 6, 4, 3], backgroundColor: COLORS.accent }
+          ]
+        },
+        options: { ...baseOpts('Projects in stage'), indexAxis: 'y', plugins: { ...baseOpts().plugins, legend: { display: false } } }
+      });
+    }
+
+    else if (id === 'scale-up') {
+      const ctx = document.getElementById('scale-chart'); if (!ctx) return;
+      // Yield improvement across scale stages
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Discovery', '100 g', '1 kg', '10 kg', '100 kg', 'GMP'],
+          datasets: [
+            { label: 'before optimization', data: [38, 42, 41, 45, 44, 46], borderColor: 'rgba(139,58,31,0.4)', borderWidth: 2, tension: 0.3, pointRadius: 4, fill: false, borderDash: [5,5] },
+            { label: 'after optimization',  data: [38, 58, 67, 74, 78, 82], borderColor: COLORS.accent, borderWidth: 2.5, tension: 0.3, pointRadius: 5, fill: false }
+          ]
+        },
+        options: { ...baseOpts('Overall yield (%)'), scales: { ...baseOpts('Overall yield (%)').scales, y: { ...baseOpts('Overall yield (%)').scales.y, max: 100, min: 0 } } }
+      });
+    }
+
+    else if (id === 'valsartan') {
+      const ctx = document.getElementById('vals-chart'); if (!ctx) return;
+      // Impurity profile reduction
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Imp A', 'Imp B', 'Imp C', 'Imp D', 'Imp E', 'Unknowns'],
+          datasets: [
+            { label: 'starting process (%)', data: [0.42, 0.31, 0.18, 0.22, 0.09, 0.15], backgroundColor: 'rgba(139,58,31,0.4)' },
+            { label: 'optimized process (%)', data: [0.08, 0.05, 0.03, 0.04, 0.02, 0.04], backgroundColor: COLORS.accent }
+          ]
+        },
+        options: { ...baseOpts('Impurity level (% area)'), plugins: { ...baseOpts().plugins, tooltip: { ...baseOpts().plugins.tooltip, callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(2) + '%' } } } }
+      });
+    }
+
+    else if (id === 'purity-99-8') {
+      const ctx = document.getElementById('purity-chart'); if (!ctx) return;
+      // Purity progression through optimization rounds
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Initial', 'Round 1', 'Round 2', 'Round 3', 'Round 4', 'Final'],
+          datasets: [
+            { label: 'API purity (%)', data: [94.2, 96.8, 98.1, 99.0, 99.5, 99.85], borderColor: COLORS.accent, backgroundColor: 'rgba(139,58,31,0.08)', borderWidth: 2.5, tension: 0.3, pointRadius: 5, pointBackgroundColor: COLORS.accent, fill: true }
+          ]
+        },
+        options: { ...baseOpts('Purity (%)'), scales: { ...baseOpts('Purity (%)').scales, y: { ...baseOpts('Purity (%)').scales.y, min: 90, max: 100 } } }
+      });
+    }
+
+    else if (id === 'suvorexant') {
+      const ctx = document.getElementById('suvo-chart'); if (!ctx) return;
+      // Stacked bar: impurity profile before vs after for key steps
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Amide #1', 'Diazepane', 'Amide #2', 'Crude API', 'Recryst. API'],
+          datasets: [
+            { label: 'before optimization (% imp)', data: [3.8, 5.2, 4.6, 2.4, 0.9], backgroundColor: 'rgba(60,52,137,0.35)' },
+            { label: 'after optimization (% imp)',  data: [0.8, 1.1, 0.6, 0.4, 0.08], backgroundColor: COLORS.purple }
+          ]
+        },
+        options: { ...baseOpts('Total impurities (% area HPLC)'), plugins: { ...baseOpts().plugins, tooltip: { ...baseOpts().plugins.tooltip, callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(2) + '%' } } } }
+      });
+    }
+
+    else if (id === 'darifenacin') {
+      const ctx = document.getElementById('dari-chart'); if (!ctx) return;
+      // Stage yields through the synthetic route
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Coupling', 'Salt form'],
+          datasets: [
+            { label: 'literature route (%)',  data: [62, 58, 71, 54, 48, 82], borderColor: 'rgba(60,52,137,0.4)', borderWidth: 2, tension: 0.3, pointRadius: 4, fill: false, borderDash: [5,5] },
+            { label: 'developed route (%)',   data: [88, 81, 86, 78, 72, 92], borderColor: COLORS.purple, backgroundColor: 'rgba(60,52,137,0.08)', borderWidth: 2.5, tension: 0.3, pointRadius: 5, pointBackgroundColor: COLORS.purple, fill: true }
+          ]
+        },
+        options: { ...baseOpts('Step yield (%)'), scales: { ...baseOpts('Step yield (%)').scales, y: { ...baseOpts('Step yield (%)').scales.y, min: 0, max: 100 } } }
+      });
+    }
+
+    else if (id === 'ag-casio3') {
+      const ctx = document.getElementById('ag-chart'); if (!ctx) return;
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Pure CaSiO₃', '1 wt% Ag', '3 wt% Ag', '5 wt% Ag'],
+          datasets: [
+            { label: 'E. coli',   data: [0, 10, 14, 17], backgroundColor: COLORS.coral },
+            { label: 'S. aureus', data: [0,  9, 11, 15], backgroundColor: 'rgba(153,60,29,0.4)' }
+          ]
+        },
+        options: { ...baseOpts('Zone of inhibition (mm)'), scales: { ...baseOpts('Zone of inhibition (mm)').scales, y: { ...baseOpts('Zone of inhibition (mm)').scales.y, max: 20 } } }
+      });
+    }
+
+    else if (id === 'zn-casio3') {
+      const ctx = document.getElementById('zn-chart'); if (!ctx) return;
+      // CFU/mL (in millions) - lower = better antibacterial action
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Control', 'Pure CaSiO₃', '1 wt% Zn', '3 wt% Zn', '5 wt% Zn'],
+          datasets: [
+            { label: 'S. aureus', data: [9.79, 8.25, 3.75, 2.80, 0.98], backgroundColor: COLORS.coral },
+            { label: 'E. coli',   data: [7.33, 6.18, 2.18, 1.78, 0.58], backgroundColor: 'rgba(153,60,29,0.4)' }
+          ]
+        },
+        options: { ...baseOpts('CFU / mL (× 10⁶)'), plugins: { ...baseOpts().plugins, tooltip: { ...baseOpts().plugins.tooltip, callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y.toFixed(2) + ' × 10⁶ CFU/mL' } } } }
+      });
+    }
+
+    rendered[id] = true;
+  }
+</script>
+
+</body>
+</html>
